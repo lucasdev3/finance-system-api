@@ -11,15 +11,18 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/")
-public class ApiController {
-
+@RequestMapping(value = "/painel/expense")
+public class ExpenseController {
     @Autowired
     GenericFinanceService genericService;
 
     @GetMapping
-    public ResponseEntity<String> init() {
-        return ResponseEntity.ok().body("API Online");
+    public ResponseEntity<List<ExpenseModel>> getAll() {
+        List<ExpenseModel> list = genericService.getAllExpensies();
+        if (list.size() > 0) {
+            return ResponseEntity.ok().body(list);
+        }
+        return ResponseEntity.badRequest().build();
     }
 
 }

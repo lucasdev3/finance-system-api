@@ -3,9 +3,7 @@ package br.com.lucasdev3.financesystemapi.entities;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity(name = "TB_EXPENSE")
 @Getter
@@ -13,7 +11,8 @@ import javax.persistence.Id;
 public class ExpenseModel {
 
     @Id
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
     @Column(name = "TITLE")
     private String title;
