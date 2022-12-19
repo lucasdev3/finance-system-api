@@ -21,25 +21,30 @@ import java.util.Map;
 @RequestMapping(value = "/painel/income")
 public class IncomeController {
     @Autowired
-    IncomeService expenseService;
+    IncomeService incomeService;
 
     private static final Logger LOGGER = Logger.getLogger(IncomeController.class);
 
     @GetMapping
     public ResponseEntity<List<Income>> getAll(HttpServletRequest request) {
-        LOGGER.info("Income controller requested - Find All by: " + request.getRemoteAddr());
-        List<Income> list = expenseService.getAll();
-        if (list.size() > 0) return ResponseEntity.ok().body(list);
-        return ResponseEntity.notFound().build();
+        try {
+            LOGGER.info("Income controller requested - Find All by: " + request.getRemoteAddr());
+            List<Income> list = incomeService.getAll();
+            if (list.size() > 0) return ResponseEntity.ok().body(list);
+            return ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage());
+            return ResponseEntity.internalServerError().build();
+        }
     }
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<Income> getById(@PathVariable Integer id, HttpServletRequest request) {
         try {
             LOGGER.info("Income controller requested - Find ID by: " + request.getRemoteAddr());
-            Income income = expenseService.getById(id);
+            Income income = incomeService.getById(id);
             if (income != null) return ResponseEntity.ok(income);
-            else return ResponseEntity.notFound().build();
+            return ResponseEntity.notFound().build();
         } catch (Exception e) {
             LOGGER.error(e.getMessage());
             return ResponseEntity.badRequest().build();
@@ -49,7 +54,13 @@ public class IncomeController {
     @PostMapping(value = "/save")
     public ResponseEntity<ResponseModel> save(ExpenseAndIncomeRegistryModel model, HttpServletRequest request) {
         LOGGER.info("Income controller requested - Save by: " + request.getRemoteAddr());
-        return expenseService.save(model);
+        return incomeService.save(model);
+    }
+
+    @PutMapping(value = "/update/{id}")
+    public ResponseEntity<ResponseModel> updateById(@PathVariable Integer id, @RequestBody ExpenseAndIncomeRegistryModel model, HttpServletRequest request) {
+        LOGGER.info("Expense controller requested - Update by: " + request.getRemoteAddr());
+        return incomeService.update(id, model);
     }
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)

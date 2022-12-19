@@ -34,7 +34,24 @@ public class ExpenseService {
             return ResponseEntity.ok(new ResponseModel("Despesa cadastrada com sucesso!", model));
         } catch (Exception e) {
             LOGGER.error("Message: " + e.getMessage());
-            return ResponseEntity.badRequest().body(new ResponseModel("Falha ao cadastrar despesa!", null));
+            return ResponseEntity.internalServerError().body(new ResponseModel("Falha ao cadastrar despesa!", null));
+        }
+    }
+
+    public ResponseEntity<ResponseModel> update(Integer id, ExpenseAndIncomeRegistryModel model) {
+        try {
+            Expense expense = expenseRepository.findById(id).orElse(null);
+            if (expense != null) {
+                expense.setTitle(model.getTitle());
+                expense.setDescription(model.getDescription());
+                expense.setExpenseValue(model.getValue());
+                expenseRepository.save(expense);
+                return ResponseEntity.ok(new ResponseModel("Despesa atualizada com sucesso!", model));
+            }
+            return ResponseEntity.badRequest().body(new ResponseModel("Falha ao atualizar despesa"));
+        } catch (Exception e) {
+            LOGGER.error("Message: " + e.getMessage());
+            return ResponseEntity.internalServerError().body(new ResponseModel("Falha ao atualizar despesa!", null));
         }
     }
 

@@ -27,23 +27,27 @@ public class ExpenseController {
 
     @GetMapping
     public ResponseEntity<List<Expense>> getAll(HttpServletRequest request) {
-        LOGGER.info("Expense controller requested - Find All by: " + request.getRemoteAddr());
-        List<Expense> list = expenseService.getAll();
-        if (list.size() > 0) return ResponseEntity.ok().body(list);
-        return ResponseEntity.notFound().build();
+        try {
+            LOGGER.info("Expense controller requested - Find All by: " + request.getRemoteAddr());
+            List<Expense> list = expenseService.getAll();
+            if (list.size() > 0) return ResponseEntity.ok().body(list);
+            return ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage());
+            return ResponseEntity.internalServerError().build();
+        }
     }
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<Expense> getById(@PathVariable Integer id, HttpServletRequest request) {
-        LOGGER.info("Expense controller requested - Find ID by: " + request.getRemoteAddr());
-        Expense expense = expenseService.getById(id);
         try {
+            LOGGER.info("Expense controller requested - Find ID by: " + request.getRemoteAddr());
+            Expense expense = expenseService.getById(id);
             if (expense != null) return ResponseEntity.ok(expense);
-            else return ResponseEntity.notFound().build();
+            return ResponseEntity.notFound().build();
         } catch (Exception e) {
             LOGGER.error(e.getMessage());
-            return ResponseEntity.badRequest().build();
-
+            return ResponseEntity.internalServerError().build();
         }
     }
 
@@ -51,6 +55,12 @@ public class ExpenseController {
     public ResponseEntity<ResponseModel> save(@RequestBody ExpenseAndIncomeRegistryModel model, HttpServletRequest request) {
         LOGGER.info("Expense controller requested - Save by: " + request.getRemoteAddr());
         return expenseService.save(model);
+    }
+
+    @PutMapping(value = "/update/{id}")
+    public ResponseEntity<ResponseModel> updateById(@PathVariable Integer id, @RequestBody ExpenseAndIncomeRegistryModel model, HttpServletRequest request) {
+        LOGGER.info("Expense controller requested - Update by: " + request.getRemoteAddr());
+        return expenseService.update(id, model);
     }
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)

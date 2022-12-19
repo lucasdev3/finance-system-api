@@ -27,6 +27,7 @@ public class IncomeService {
     public Income getById(Integer id) {
         return incomeRepository.findById(id).orElse(null);
     }
+
     public ResponseEntity<ResponseModel> save(ExpenseAndIncomeRegistryModel model) {
         try {
             incomeRepository.save(new Income(model));
@@ -34,6 +35,23 @@ public class IncomeService {
         } catch (Exception e) {
             LOGGER.error("Message: " + e.getMessage());
             return ResponseEntity.badRequest().body(new ResponseModel("Falha ao cadastrar receita!", null));
+        }
+    }
+
+    public ResponseEntity<ResponseModel> update(Integer id, ExpenseAndIncomeRegistryModel model) {
+        try {
+            Income income = incomeRepository.findById(id).orElse(null);
+            if (income != null) {
+                income.setTitle(model.getTitle());
+                income.setDescription(model.getDescription());
+                income.setIncomeValue(model.getValue());
+                incomeRepository.save(income);
+                return ResponseEntity.ok(new ResponseModel("Receita atualizada com sucesso!", model));
+            }
+            return ResponseEntity.badRequest().body(new ResponseModel("Falha ao atualizar receita"));
+        } catch (Exception e) {
+            LOGGER.error("Message: " + e.getMessage());
+            return ResponseEntity.internalServerError().body(new ResponseModel("Falha ao atualizar receita!", null));
         }
     }
 
