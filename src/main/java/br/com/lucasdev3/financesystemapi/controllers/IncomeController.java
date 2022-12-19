@@ -52,7 +52,7 @@ public class IncomeController {
     }
 
     @PostMapping(value = "/save")
-    public ResponseEntity<ResponseModel> save(ExpenseAndIncomeRegistryModel model, HttpServletRequest request) {
+    public ResponseEntity<ResponseModel> save(@RequestBody ExpenseAndIncomeRegistryModel model, HttpServletRequest request) {
         LOGGER.info("Income controller requested - Save by: " + request.getRemoteAddr());
         return incomeService.save(model);
     }
