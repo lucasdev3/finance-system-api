@@ -63,6 +63,12 @@ public class ExpenseController {
         return expenseService.update(id, model);
     }
 
+    @DeleteMapping(value = "/delete/{id}")
+    public ResponseEntity<ResponseModel> deleteById(@PathVariable Integer id, HttpServletRequest request) {
+        LOGGER.info("Expense controller requested - Update by: " + request.getRemoteAddr());
+        return expenseService.delete(id);
+    }
+
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public Map<String, String> handleValidationExceptions(MethodArgumentNotValidException ex) {

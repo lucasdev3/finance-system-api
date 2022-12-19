@@ -34,7 +34,7 @@ public class IncomeService {
             return ResponseEntity.ok(new ResponseModel("Receita cadastrada com sucesso!", model));
         } catch (Exception e) {
             LOGGER.error("Message: " + e.getMessage());
-            return ResponseEntity.badRequest().body(new ResponseModel("Falha ao cadastrar receita!", null));
+            return ResponseEntity.badRequest().body(new ResponseModel("Falha ao cadastrar receita!"));
         }
     }
 
@@ -51,7 +51,21 @@ public class IncomeService {
             return ResponseEntity.badRequest().body(new ResponseModel("Falha ao atualizar receita"));
         } catch (Exception e) {
             LOGGER.error("Message: " + e.getMessage());
-            return ResponseEntity.internalServerError().body(new ResponseModel("Falha ao atualizar receita!", null));
+            return ResponseEntity.internalServerError().body(new ResponseModel("Falha ao atualizar receita!"));
+        }
+    }
+
+    public ResponseEntity<ResponseModel> delete(Integer id) {
+        try {
+            Income income = incomeRepository.findById(id).orElse(null);
+            if(income == null) {
+                return ResponseEntity.notFound().build();
+            }
+            incomeRepository.deleteById(id);
+            return ResponseEntity.ok(new ResponseModel("Receita deletada com sucesso!"));
+        } catch (Exception e) {
+            LOGGER.error("Message: " + e.getMessage());
+            return ResponseEntity.internalServerError().body(new ResponseModel("Falha ao deletar despesa!"));
         }
     }
 

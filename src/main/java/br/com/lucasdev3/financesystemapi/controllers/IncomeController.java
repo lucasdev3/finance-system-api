@@ -59,8 +59,14 @@ public class IncomeController {
 
     @PutMapping(value = "/update/{id}")
     public ResponseEntity<ResponseModel> updateById(@PathVariable Integer id, @RequestBody ExpenseAndIncomeRegistryModel model, HttpServletRequest request) {
-        LOGGER.info("Expense controller requested - Update by: " + request.getRemoteAddr());
+        LOGGER.info("Income controller requested - Update by: " + request.getRemoteAddr());
         return incomeService.update(id, model);
+    }
+
+    @DeleteMapping(value = "/delete/{id}")
+    public ResponseEntity<ResponseModel> deleteById(@PathVariable Integer id, HttpServletRequest request) {
+        LOGGER.info("Income controller requested - Update by: " + request.getRemoteAddr());
+        return incomeService.delete(id);
     }
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)

@@ -55,4 +55,18 @@ public class ExpenseService {
         }
     }
 
+    public ResponseEntity<ResponseModel> delete(Integer id) {
+        try {
+            Expense expense = expenseRepository.findById(id).orElse(null);
+            if(expense == null) {
+                return ResponseEntity.notFound().build();
+            }
+            expenseRepository.deleteById(id);
+            return ResponseEntity.ok(new ResponseModel("Despesa deletada com sucesso!"));
+        } catch (Exception e) {
+            LOGGER.error("Message: " + e.getMessage());
+            return ResponseEntity.internalServerError().body(new ResponseModel("Falha ao deletar despesa!", null));
+        }
+    }
+
 }
