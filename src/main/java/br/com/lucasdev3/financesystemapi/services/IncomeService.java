@@ -1,9 +1,9 @@
 package br.com.lucasdev3.financesystemapi.services;
 
-import br.com.lucasdev3.financesystemapi.entities.Expense;
+import br.com.lucasdev3.financesystemapi.entities.Income;
 import br.com.lucasdev3.financesystemapi.models.ExpenseAndIncomeRegistryModel;
 import br.com.lucasdev3.financesystemapi.models.ResponseModel;
-import br.com.lucasdev3.financesystemapi.repositories.ExpenseRepository;
+import br.com.lucasdev3.financesystemapi.repositories.IncomeRepository;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,27 +14,26 @@ import java.util.List;
 
 @Service
 @Transactional
-public class ExpenseService {
+public class IncomeService {
     @Autowired
-    ExpenseRepository expenseRepository;
+    IncomeRepository incomeRepository;
 
-    private static final Logger LOGGER = Logger.getLogger(ExpenseService.class);
+    private static final Logger LOGGER = Logger.getLogger(IncomeService.class);
 
-    public List<Expense> getAll() {
-        return expenseRepository.findAll();
+    public List<Income> getAll() {
+        return incomeRepository.findAll();
     }
 
-    public Expense getById(Integer id) {
-        return expenseRepository.findById(id).orElse(null);
+    public Income getById(Integer id) {
+        return incomeRepository.findById(id).orElse(null);
     }
-
     public ResponseEntity<ResponseModel> save(ExpenseAndIncomeRegistryModel model) {
         try {
-            expenseRepository.save(new Expense(model));
-            return ResponseEntity.ok(new ResponseModel("Despesa cadastrada com sucesso!", model));
+            incomeRepository.save(new Income(model));
+            return ResponseEntity.ok(new ResponseModel("Receita cadastrada com sucesso!", model));
         } catch (Exception e) {
             LOGGER.error("Message: " + e.getMessage());
-            return ResponseEntity.badRequest().body(new ResponseModel("Falha ao cadastrar despesa!", null));
+            return ResponseEntity.badRequest().body(new ResponseModel("Falha ao cadastrar receita!", null));
         }
     }
 

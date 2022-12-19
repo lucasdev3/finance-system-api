@@ -9,10 +9,12 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ExpenseRegistryModel {
+public class ExpenseAndIncomeRegistryModel {
 
     private String title;
-    private double expenseValue;
+
+    private Double value = 0d;
+
     private String description;
 
 }

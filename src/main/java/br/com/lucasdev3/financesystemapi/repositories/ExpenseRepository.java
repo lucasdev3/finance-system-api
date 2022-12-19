@@ -4,6 +4,6 @@ import br.com.lucasdev3.financesystemapi.entities.Expense;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ExpenseRepository extends GenericRepository<Expense, String> {
+public interface ExpenseRepository extends GenericRepository<Expense, Integer> {
 
 }

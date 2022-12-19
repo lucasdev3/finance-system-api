@@ -1,9 +1,9 @@
 package br.com.lucasdev3.financesystemapi.controllers;
 
-import br.com.lucasdev3.financesystemapi.entities.Expense;
+import br.com.lucasdev3.financesystemapi.entities.Income;
 import br.com.lucasdev3.financesystemapi.models.ExpenseAndIncomeRegistryModel;
 import br.com.lucasdev3.financesystemapi.models.ResponseModel;
-import br.com.lucasdev3.financesystemapi.services.ExpenseService;
+import br.com.lucasdev3.financesystemapi.services.IncomeService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,38 +18,37 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping(value = "/painel/expense")
-public class ExpenseController {
+@RequestMapping(value = "/painel/income")
+public class IncomeController {
     @Autowired
-    ExpenseService expenseService;
+    IncomeService expenseService;
 
-    private static final Logger LOGGER = Logger.getLogger(ExpenseController.class);
+    private static final Logger LOGGER = Logger.getLogger(IncomeController.class);
 
     @GetMapping
-    public ResponseEntity<List<Expense>> getAll(HttpServletRequest request) {
-        LOGGER.info("Expense controller requested - Find All by: " + request.getRemoteAddr());
-        List<Expense> list = expenseService.getAll();
+    public ResponseEntity<List<Income>> getAll(HttpServletRequest request) {
+        LOGGER.info("Income controller requested - Find All by: " + request.getRemoteAddr());
+        List<Income> list = expenseService.getAll();
         if (list.size() > 0) return ResponseEntity.ok().body(list);
         return ResponseEntity.notFound().build();
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<Expense> getById(@PathVariable Integer id, HttpServletRequest request) {
-        LOGGER.info("Expense controller requested - Find ID by: " + request.getRemoteAddr());
-        Expense expense = expenseService.getById(id);
+    public ResponseEntity<Income> getById(@PathVariable Integer id, HttpServletRequest request) {
         try {
-            if (expense != null) return ResponseEntity.ok(expense);
+            LOGGER.info("Income controller requested - Find ID by: " + request.getRemoteAddr());
+            Income income = expenseService.getById(id);
+            if (income != null) return ResponseEntity.ok(income);
             else return ResponseEntity.notFound().build();
         } catch (Exception e) {
             LOGGER.error(e.getMessage());
             return ResponseEntity.badRequest().build();
-
         }
     }
 
     @PostMapping(value = "/save")
-    public ResponseEntity<ResponseModel> save(@RequestBody ExpenseAndIncomeRegistryModel model, HttpServletRequest request) {
-        LOGGER.info("Expense controller requested - Save by: " + request.getRemoteAddr());
+    public ResponseEntity<ResponseModel> save(ExpenseAndIncomeRegistryModel model, HttpServletRequest request) {
+        LOGGER.info("Income controller requested - Save by: " + request.getRemoteAddr());
         return expenseService.save(model);
     }
 

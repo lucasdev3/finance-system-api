@@ -13,10 +13,10 @@ import java.io.Serializable;
 @Getter
 @Setter
 public class GenericEntity implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
-
+    private Integer id;
 
 }

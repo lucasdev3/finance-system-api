@@ -11,26 +11,27 @@ import javax.persistence.Entity;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-@Entity(name = "TB_EXPENSE")
+@Entity(name = "TB_INCOME")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Expense extends GenericEntity {
+public class Income extends GenericEntity {
 
     @Column(name = "TITLE")
     @NotBlank(message = "title is mandatory")
     private String title;
 
-    @Column(name = "EXPENSE_VALUE")
-    private Double expenseValue;
+    @Column(name = "INCOME_VALUE")
+    private Double incomeValue;
+
     @NotBlank(message = "description is mandatory")
     @Column(name = "DESCRIPTION")
     private String description;
 
-    public Expense(ExpenseAndIncomeRegistryModel model) {
+    public Income(ExpenseAndIncomeRegistryModel model) {
         this.title = model.getTitle();
-        this.expenseValue = model.getValue();
+        this.incomeValue = model.getValue();
         this.description = model.getDescription();
     }
 
