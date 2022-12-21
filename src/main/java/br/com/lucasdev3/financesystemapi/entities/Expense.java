@@ -1,36 +1,47 @@
 package br.com.lucasdev3.financesystemapi.entities;
 
 import br.com.lucasdev3.financesystemapi.models.ExpenseAndIncomeRegistryModel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.io.Serializable;
 
-@Entity(name = "TB_EXPENSE")
+@Entity
+@Table(name = "TB_EXPENSE")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Expense extends GenericEntity {
+@ToString
+public class Expense implements Serializable {
 
-    @Column(name = "TITLE")
+    private static final long serialVersionUID = 1L;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(unique = true, nullable = false, updatable = false, insertable = false)
+    private Integer id;
+
+    @Column(name = "TITLE", nullable = false)
     @NotBlank(message = "title is mandatory")
     private String title;
 
-    @Column(name = "EXPENSE_VALUE")
+    @Column(name = "EXPENSE_VALUE", nullable = false)
     private Double expenseValue;
+    @Column(name = "DESCRIPTION", nullable = false)
     @NotBlank(message = "description is mandatory")
-    @Column(name = "DESCRIPTION")
     private String description;
 
-    public Expense(ExpenseAndIncomeRegistryModel model) {
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
+
+    public Expense(ExpenseAndIncomeRegistryModel model, Category category) {
         this.title = model.getTitle();
         this.expenseValue = model.getValue();
         this.description = model.getDescription();
+        this.category = category;
     }
 
 }

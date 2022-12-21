@@ -1,6 +1,7 @@
 package br.com.lucasdev3.financesystemapi.services;
 
 import br.com.lucasdev3.financesystemapi.entities.Income;
+import br.com.lucasdev3.financesystemapi.models.CategoryModel;
 import br.com.lucasdev3.financesystemapi.models.ExpenseAndIncomeRegistryModel;
 import br.com.lucasdev3.financesystemapi.models.ResponseModel;
 import br.com.lucasdev3.financesystemapi.repositories.IncomeRepository;
@@ -11,33 +12,38 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
-@Transactional
 public class IncomeService {
     @Autowired
     IncomeRepository incomeRepository;
 
-    private static final Logger LOGGER = Logger.getLogger(IncomeService.class);
+    @Autowired
+    CategoryService categoryService;
 
-    public List<Income> getAll() {
+    private static final Logger LOGGER = Logger.getLogger(IncomeService.class);
+    @Transactional(readOnly = true)
+    public Iterable<Income> getAll() {
         return incomeRepository.findAll();
     }
-
+    @Transactional(readOnly = true)
     public Income getById(Integer id) {
         return incomeRepository.findById(id).orElse(null);
     }
 
+    @Transactional
     public ResponseEntity<ResponseModel> save(ExpenseAndIncomeRegistryModel model) {
         try {
-            incomeRepository.save(new Income(model));
+            var category = Optional.of(categoryService.getById(model.getCategoryId())).orElse(null);
+            incomeRepository.save(new Income(model, category));
             return ResponseEntity.ok(new ResponseModel("Receita cadastrada com sucesso!", model));
         } catch (Exception e) {
             LOGGER.error("Message: " + e.getMessage());
             return ResponseEntity.badRequest().body(new ResponseModel("Falha ao cadastrar receita!"));
         }
     }
-
+    @Transactional
     public ResponseEntity<ResponseModel> update(Integer id, ExpenseAndIncomeRegistryModel model) {
         try {
             Income income = incomeRepository.findById(id).orElse(null);
@@ -55,10 +61,11 @@ public class IncomeService {
         }
     }
 
+    @Transactional
     public ResponseEntity<ResponseModel> delete(Integer id) {
         try {
             Income income = incomeRepository.findById(id).orElse(null);
-            if(income == null) {
+            if (income == null) {
                 return ResponseEntity.notFound().build();
             }
             incomeRepository.deleteById(id);

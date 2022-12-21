@@ -26,11 +26,11 @@ public class IncomeController {
     private static final Logger LOGGER = Logger.getLogger(IncomeController.class);
 
     @GetMapping
-    public ResponseEntity<List<Income>> getAll(HttpServletRequest request) {
+    public ResponseEntity<Iterable<Income>> getAll(HttpServletRequest request) {
         try {
             LOGGER.info("Income controller requested - Find All by: " + request.getRemoteAddr());
-            List<Income> list = incomeService.getAll();
-            if (list.size() > 0) return ResponseEntity.ok().body(list);
+            Iterable<Income> list = incomeService.getAll();
+            if (list.iterator().hasNext()) return ResponseEntity.ok().body(list);
             return ResponseEntity.notFound().build();
         } catch (Exception e) {
             LOGGER.error(e.getMessage());

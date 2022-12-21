@@ -10,27 +10,33 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import java.util.Optional;
 
 @Service
-@Transactional
 public class ExpenseService {
     @Autowired
     ExpenseRepository expenseRepository;
 
+    @Autowired
+    CategoryService categoryService;
+
     private static final Logger LOGGER = Logger.getLogger(ExpenseService.class);
 
-    public List<Expense> getAll() {
+    @Transactional(readOnly = true)
+    public Iterable<Expense> getAll() {
         return expenseRepository.findAll();
     }
 
+    @Transactional(readOnly = true)
     public Expense getById(Integer id) {
         return expenseRepository.findById(id).orElse(null);
     }
 
+    @Transactional
     public ResponseEntity<ResponseModel> save(ExpenseAndIncomeRegistryModel model) {
         try {
-            expenseRepository.save(new Expense(model));
+            var category = Optional.of(categoryService.getById(model.getCategoryId())).orElse(null);
+            expenseRepository.save(new Expense(model, category));
             return ResponseEntity.ok(new ResponseModel("Despesa cadastrada com sucesso!", model));
         } catch (Exception e) {
             LOGGER.error("Message: " + e.getMessage());
@@ -38,6 +44,7 @@ public class ExpenseService {
         }
     }
 
+    @Transactional
     public ResponseEntity<ResponseModel> update(Integer id, ExpenseAndIncomeRegistryModel model) {
         try {
             Expense expense = expenseRepository.findById(id).orElse(null);
@@ -54,11 +61,11 @@ public class ExpenseService {
             return ResponseEntity.internalServerError().body(new ResponseModel("Falha ao atualizar despesa!", null));
         }
     }
-
+    @Transactional
     public ResponseEntity<ResponseModel> delete(Integer id) {
         try {
             Expense expense = expenseRepository.findById(id).orElse(null);
-            if(expense == null) {
+            if (expense == null) {
                 return ResponseEntity.notFound().build();
             }
             expenseRepository.deleteById(id);

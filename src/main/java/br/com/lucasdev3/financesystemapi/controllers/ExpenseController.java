@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -26,11 +25,11 @@ public class ExpenseController {
     private static final Logger LOGGER = Logger.getLogger(ExpenseController.class);
 
     @GetMapping
-    public ResponseEntity<List<Expense>> getAll(HttpServletRequest request) {
+    public ResponseEntity<Iterable<Expense>> getAll(HttpServletRequest request) {
         try {
             LOGGER.info("Expense controller requested - Find All by: " + request.getRemoteAddr());
-            List<Expense> list = expenseService.getAll();
-            if (list.size() > 0) return ResponseEntity.ok().body(list);
+            var list = expenseService.getAll();
+            if (list.iterator().hasNext()) return ResponseEntity.ok().body(list);
             return ResponseEntity.notFound().build();
         } catch (Exception e) {
             LOGGER.error(e.getMessage());
