@@ -1,9 +1,11 @@
 package br.com.lucasdev3.financesystemapi.services;
 
+import br.com.lucasdev3.financesystemapi.entities.Category;
 import br.com.lucasdev3.financesystemapi.entities.Income;
 import br.com.lucasdev3.financesystemapi.models.CategoryModel;
 import br.com.lucasdev3.financesystemapi.models.ExpenseAndIncomeRegistryModel;
 import br.com.lucasdev3.financesystemapi.models.ResponseModel;
+import br.com.lucasdev3.financesystemapi.repositories.CategoryRepository;
 import br.com.lucasdev3.financesystemapi.repositories.IncomeRepository;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +22,7 @@ public class IncomeService {
     IncomeRepository incomeRepository;
 
     @Autowired
-    CategoryService categoryService;
+    CategoryRepository categoryRepository;
 
     private static final Logger LOGGER = Logger.getLogger(IncomeService.class);
     @Transactional(readOnly = true)
@@ -35,7 +37,7 @@ public class IncomeService {
     @Transactional
     public ResponseEntity<ResponseModel> save(ExpenseAndIncomeRegistryModel model) {
         try {
-            var category = Optional.of(categoryService.getById(model.getCategoryId())).orElse(null);
+            var category = categoryRepository.findById(model.getCategoryId()).orElse(null);
             incomeRepository.save(new Income(model, category));
             return ResponseEntity.ok(new ResponseModel("Receita cadastrada com sucesso!", model));
         } catch (Exception e) {
@@ -47,10 +49,13 @@ public class IncomeService {
     public ResponseEntity<ResponseModel> update(Integer id, ExpenseAndIncomeRegistryModel model) {
         try {
             Income income = incomeRepository.findById(id).orElse(null);
-            if (income != null) {
+            //Checando se a categoria existe
+            Category category = categoryRepository.findById(model.getCategoryId()).orElse(null);
+            if (income != null && category != null) {
                 income.setTitle(model.getTitle());
                 income.setDescription(model.getDescription());
                 income.setIncomeValue(model.getValue());
+                income.setCategory(category);
                 incomeRepository.save(income);
                 return ResponseEntity.ok(new ResponseModel("Receita atualizada com sucesso!", model));
             }
