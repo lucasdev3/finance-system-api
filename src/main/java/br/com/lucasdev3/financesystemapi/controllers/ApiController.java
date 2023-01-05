@@ -11,12 +11,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value = "/")
 public class ApiController {
 
-    @Autowired
-    ExpenseService genericService;
+  @Autowired
+  ExpenseService genericService;
 
-    @GetMapping
-    public ResponseEntity<String> init() {
-        return ResponseEntity.ok().body("API Online");
-    }
+  @GetMapping
+  public ResponseEntity<String> init() {
+    return ResponseEntity.ok().body("API Online");
+  }
 
 }

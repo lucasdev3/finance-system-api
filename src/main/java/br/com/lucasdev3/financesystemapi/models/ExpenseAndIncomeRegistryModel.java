@@ -11,12 +11,12 @@ import lombok.Setter;
 @NoArgsConstructor
 public class ExpenseAndIncomeRegistryModel {
 
-    private String title;
+  private String title;
 
-    private Double value = 0d;
+  private Double value = 0d;
 
-    private String description;
+  private String description;
 
-    private Integer categoryId;
+  private Integer categoryId;
 
 }

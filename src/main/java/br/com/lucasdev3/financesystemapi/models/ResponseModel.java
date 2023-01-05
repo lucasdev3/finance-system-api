@@ -11,10 +11,10 @@ import lombok.Setter;
 @NoArgsConstructor
 public class ResponseModel {
 
-    private String message;
-    private Object obj;
+  private String message;
+  private Object obj;
 
-    public ResponseModel(String message) {
-        this.message = message;
-    }
+  public ResponseModel(String message) {
+    this.message = message;
+  }
 }

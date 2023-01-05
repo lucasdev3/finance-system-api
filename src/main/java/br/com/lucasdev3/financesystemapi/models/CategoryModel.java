@@ -11,6 +11,6 @@ import lombok.Setter;
 @NoArgsConstructor
 public class CategoryModel {
 
-    private String name;
+  private String name;
 
 }
