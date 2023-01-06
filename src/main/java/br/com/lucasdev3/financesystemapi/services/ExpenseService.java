@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class ExpenseService {
@@ -28,7 +29,7 @@ public class ExpenseService {
     }
 
     @Transactional(readOnly = true)
-    public Expense getById(Integer id) {
+    public Expense getById(UUID id) {
         return expenseRepository.findById(id).orElse(null);
     }
 
@@ -45,7 +46,7 @@ public class ExpenseService {
     }
 
     @Transactional
-    public ResponseEntity<ResponseModel> update(Integer id, ExpenseAndIncomeRegistryModel model) {
+    public ResponseEntity<ResponseModel> update(UUID id, ExpenseAndIncomeRegistryModel model) {
         try {
             Expense expense = expenseRepository.findById(id).orElse(null);
             if (expense != null) {
@@ -61,8 +62,9 @@ public class ExpenseService {
             return ResponseEntity.internalServerError().body(new ResponseModel("Falha ao atualizar despesa!", null));
         }
     }
+
     @Transactional
-    public ResponseEntity<ResponseModel> delete(Integer id) {
+    public ResponseEntity<ResponseModel> delete(UUID id) {
         try {
             Expense expense = expenseRepository.findById(id).orElse(null);
             if (expense == null) {

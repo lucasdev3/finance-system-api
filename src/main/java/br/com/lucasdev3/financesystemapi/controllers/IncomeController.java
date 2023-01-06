@@ -8,14 +8,15 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 @RestController
 @RequestMapping(value = "/painel/income")
@@ -24,7 +25,7 @@ public class IncomeController {
     IncomeService incomeService;
 
     private static final Logger LOGGER = Logger.getLogger(IncomeController.class);
-
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN, ROLE_USER')")
     @GetMapping
     public ResponseEntity<Iterable<Income>> getAll(HttpServletRequest request) {
         try {
@@ -37,9 +38,9 @@ public class IncomeController {
             return ResponseEntity.internalServerError().build();
         }
     }
-
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN, ROLE_USER')")
     @GetMapping(value = "/{id}")
-    public ResponseEntity<Income> getById(@PathVariable Integer id, HttpServletRequest request) {
+    public ResponseEntity<Income> getById(@PathVariable UUID id, HttpServletRequest request) {
         try {
             LOGGER.info("Income controller requested - Find ID by: " + request.getRemoteAddr());
             Income income = incomeService.getById(id);
@@ -50,21 +51,21 @@ public class IncomeController {
             return ResponseEntity.badRequest().build();
         }
     }
-
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN, ROLE_USER')")
     @PostMapping(value = "/save")
     public ResponseEntity<ResponseModel> save(@RequestBody ExpenseAndIncomeRegistryModel model, HttpServletRequest request) {
         LOGGER.info("Income controller requested - Save by: " + request.getRemoteAddr());
         return incomeService.save(model);
     }
-
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN, ROLE_USER')")
     @PutMapping(value = "/update/{id}")
-    public ResponseEntity<ResponseModel> updateById(@PathVariable Integer id, @RequestBody ExpenseAndIncomeRegistryModel model, HttpServletRequest request) {
+    public ResponseEntity<ResponseModel> updateById(@PathVariable UUID id, @RequestBody ExpenseAndIncomeRegistryModel model, HttpServletRequest request) {
         LOGGER.info("Income controller requested - Update by: " + request.getRemoteAddr());
         return incomeService.update(id, model);
     }
-
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN, ROLE_USER')")
     @DeleteMapping(value = "/delete/{id}")
-    public ResponseEntity<ResponseModel> deleteById(@PathVariable Integer id, HttpServletRequest request) {
+    public ResponseEntity<ResponseModel> deleteById(@PathVariable UUID id, HttpServletRequest request) {
         LOGGER.info("Income controller requested - Update by: " + request.getRemoteAddr());
         return incomeService.delete(id);
     }

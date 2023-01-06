@@ -5,20 +5,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.UUID;
-
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ExpenseAndIncomeRegistryModel {
+public class UserRegistryModel {
 
-    private String title;
+    private String username;
 
-    private Double value = 0d;
-
-    private String description;
-
-    private UUID categoryId;
+    private String password;
 
 }

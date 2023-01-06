@@ -2,12 +2,16 @@ package br.com.lucasdev3.financesystemapi.entities;
 
 import br.com.lucasdev3.financesystemapi.models.CategoryModel;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.util.Set;
+import java.util.UUID;
 
 @Entity
 @Table(name = "TB_CATEGORY")
@@ -15,15 +19,14 @@ import java.util.Set;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
 public class Category implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     @Column(unique = true, nullable = false, updatable = false, insertable = false)
-    private Integer id;
+    private UUID id;
     @Column(name = "NAME", unique = true, nullable = false)
     @NotBlank(message = "name is mandatory")
     private String name;

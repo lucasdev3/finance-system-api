@@ -1,7 +1,6 @@
 package br.com.lucasdev3.financesystemapi.services;
 
 import br.com.lucasdev3.financesystemapi.entities.Income;
-import br.com.lucasdev3.financesystemapi.models.CategoryModel;
 import br.com.lucasdev3.financesystemapi.models.ExpenseAndIncomeRegistryModel;
 import br.com.lucasdev3.financesystemapi.models.ResponseModel;
 import br.com.lucasdev3.financesystemapi.repositories.IncomeRepository;
@@ -11,8 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class IncomeService {
@@ -23,12 +22,14 @@ public class IncomeService {
     CategoryService categoryService;
 
     private static final Logger LOGGER = Logger.getLogger(IncomeService.class);
+
     @Transactional(readOnly = true)
     public Iterable<Income> getAll() {
         return incomeRepository.findAll();
     }
+
     @Transactional(readOnly = true)
-    public Income getById(Integer id) {
+    public Income getById(UUID id) {
         return incomeRepository.findById(id).orElse(null);
     }
 
@@ -43,8 +44,9 @@ public class IncomeService {
             return ResponseEntity.badRequest().body(new ResponseModel("Falha ao cadastrar receita!"));
         }
     }
+
     @Transactional
-    public ResponseEntity<ResponseModel> update(Integer id, ExpenseAndIncomeRegistryModel model) {
+    public ResponseEntity<ResponseModel> update(UUID id, ExpenseAndIncomeRegistryModel model) {
         try {
             Income income = incomeRepository.findById(id).orElse(null);
             if (income != null) {
@@ -62,7 +64,7 @@ public class IncomeService {
     }
 
     @Transactional
-    public ResponseEntity<ResponseModel> delete(Integer id) {
+    public ResponseEntity<ResponseModel> delete(UUID id) {
         try {
             Income income = incomeRepository.findById(id).orElse(null);
             if (income == null) {

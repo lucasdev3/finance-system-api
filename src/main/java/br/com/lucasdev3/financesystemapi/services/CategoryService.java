@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class CategoryService {
@@ -25,7 +26,7 @@ public class CategoryService {
     }
 
     @Transactional(readOnly = true)
-    public Category getById(Integer id) {
+    public Category getById(UUID id) {
         return categoryRepository.findById(id).orElse(null);
     }
 
