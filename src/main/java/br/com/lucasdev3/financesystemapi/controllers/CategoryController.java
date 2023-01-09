@@ -34,7 +34,8 @@ public class CategoryController {
   @GetMapping
   public ResponseEntity<Iterable<Category>> getAll(HttpServletRequest request) {
     try {
-      LOGGER.info("Category controller requested - Find All by: " + request.getRemoteAddr());
+      LOGGER.info("Category controller requested " + request.getRequestURI() + " - Find All by: "
+          + request.getRemoteAddr());
       Iterable<Category> list = categoryService.getAll();
       if (list.iterator().hasNext()) {
         return ResponseEntity.ok().body(list);
@@ -49,7 +50,8 @@ public class CategoryController {
   @GetMapping(value = "/{id}")
   public ResponseEntity<Category> getById(@PathVariable Integer id, HttpServletRequest request) {
     try {
-      LOGGER.info("Category controller requested - Find ID by: " + request.getRemoteAddr());
+      LOGGER.info("Category controller requested " + request.getRequestURI() + " - Find ID by: "
+          + request.getRemoteAddr());
       Category category = categoryService.getById(id);
       if (category != null) {
         return ResponseEntity.ok(category);
@@ -64,7 +66,8 @@ public class CategoryController {
   @PostMapping(value = "/save")
   public ResponseEntity<ResponseModel> save(@RequestBody CategoryModel model,
       HttpServletRequest request) {
-    LOGGER.info("Category controller requested - Save by: " + request.getRemoteAddr());
+    LOGGER.info("Category controller requested " + request.getRequestURI() + " - Save by: "
+        + request.getRemoteAddr());
     return categoryService.save(model);
   }
 

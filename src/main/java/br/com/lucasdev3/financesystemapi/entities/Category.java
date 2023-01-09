@@ -35,6 +35,10 @@ public class Category implements Serializable {
   @NotBlank(message = "name is mandatory")
   private String name;
 
+  @Column(name = "TYPE", unique = true, nullable = false)
+  @NotBlank(message = "type is mandatory")
+  private String type;
+
   @OneToMany(mappedBy = "category")
   @JsonIgnore
   private Set<Expense> expenses;

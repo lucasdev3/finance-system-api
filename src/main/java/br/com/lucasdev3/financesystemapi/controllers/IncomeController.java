@@ -36,7 +36,7 @@ public class IncomeController {
   @GetMapping
   public ResponseEntity<Iterable<Income>> getAll(HttpServletRequest request) {
     try {
-      LOGGER.info("Income controller requested - Find All by: " + request.getRemoteAddr());
+      LOGGER.info("Income controller requested " + request.getRequestURI() + " - Find All by: " + request.getRemoteAddr());
       Iterable<Income> list = incomeService.getAll();
       if (list.iterator().hasNext()) {
         return ResponseEntity.ok().body(list);
@@ -51,7 +51,7 @@ public class IncomeController {
   @GetMapping(value = "/{id}")
   public ResponseEntity<Income> getById(@PathVariable Integer id, HttpServletRequest request) {
     try {
-      LOGGER.info("Income controller requested - Find ID by: " + request.getRemoteAddr());
+      LOGGER.info("Income controller requested " + request.getRequestURI() + " - Find ID by: " + request.getRemoteAddr());
       Income income = incomeService.getById(id);
       if (income != null) {
         return ResponseEntity.ok(income);
@@ -66,21 +66,21 @@ public class IncomeController {
   @PostMapping(value = "/save")
   public ResponseEntity<ResponseModel> save(@RequestBody ExpenseAndIncomeRegistryModel model,
       HttpServletRequest request) {
-    LOGGER.info("Income controller requested - Save by: " + request.getRemoteAddr());
+    LOGGER.info("Income controller requested " + request.getRequestURI() + " - Save by: " + request.getRemoteAddr());
     return incomeService.save(model);
   }
 
   @PutMapping(value = "/update/{id}")
   public ResponseEntity<ResponseModel> updateById(@PathVariable Integer id,
       @RequestBody ExpenseAndIncomeRegistryModel model, HttpServletRequest request) {
-    LOGGER.info("Income controller requested - Update by: " + request.getRemoteAddr());
+    LOGGER.info("Income controller requested " + request.getRequestURI() + " - Update by: " + request.getRemoteAddr());
     return incomeService.update(id, model);
   }
 
   @DeleteMapping(value = "/delete/{id}")
   public ResponseEntity<ResponseModel> deleteById(@PathVariable Integer id,
       HttpServletRequest request) {
-    LOGGER.info("Income controller requested - Update by: " + request.getRemoteAddr());
+    LOGGER.info("Income controller requested " + request.getRequestURI() + " - Update by: " + request.getRemoteAddr());
     return incomeService.delete(id);
   }
 

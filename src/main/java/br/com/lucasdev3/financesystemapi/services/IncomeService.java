@@ -37,6 +37,9 @@ public class IncomeService {
   public ResponseEntity<ResponseModel> save(ExpenseAndIncomeRegistryModel model) {
     try {
       var category = categoryRepository.findById(model.getCategoryId()).orElse(null);
+      if (category == null) {
+        return ResponseEntity.badRequest().body(new ResponseModel("Categoria inválida!"));
+      }
       incomeRepository.save(new Income(model, category));
       return ResponseEntity.ok(new ResponseModel("Receita cadastrada com sucesso!", model));
     } catch (Exception e) {

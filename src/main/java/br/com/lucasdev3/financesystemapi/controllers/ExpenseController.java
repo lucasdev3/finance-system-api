@@ -36,7 +36,8 @@ public class ExpenseController {
   @GetMapping
   public ResponseEntity<Iterable<Expense>> getAll(HttpServletRequest request) {
     try {
-      LOGGER.info("Expense controller requested - Find All by: " + request.getRemoteAddr());
+      LOGGER.info("Expense controller requested " + request.getRequestURI() + " - Find All by: "
+          + request.getRemoteAddr());
       var list = expenseService.getAll();
       if (list.iterator().hasNext()) {
         return ResponseEntity.ok().body(list);
@@ -51,7 +52,8 @@ public class ExpenseController {
   @GetMapping(value = "/{id}")
   public ResponseEntity<Expense> getById(@PathVariable Integer id, HttpServletRequest request) {
     try {
-      LOGGER.info("Expense controller requested - Find ID by: " + request.getRemoteAddr());
+      LOGGER.info("Expense controller requested " + request.getRequestURI() + " - Find ID by: "
+          + request.getRemoteAddr());
       Expense expense = expenseService.getById(id);
       if (expense != null) {
         return ResponseEntity.ok(expense);
@@ -66,21 +68,24 @@ public class ExpenseController {
   @PostMapping(value = "/save")
   public ResponseEntity<ResponseModel> save(@RequestBody ExpenseAndIncomeRegistryModel model,
       HttpServletRequest request) {
-    LOGGER.info("Expense controller requested - Save by: " + request.getRemoteAddr());
+    LOGGER.info("Expense controller requested " + request.getRequestURI() + " - Save by: "
+        + request.getRemoteAddr());
     return expenseService.save(model);
   }
 
   @PutMapping(value = "/update/{id}")
   public ResponseEntity<ResponseModel> updateById(@PathVariable Integer id,
       @RequestBody ExpenseAndIncomeRegistryModel model, HttpServletRequest request) {
-    LOGGER.info("Expense controller requested - Update by: " + request.getRemoteAddr());
+    LOGGER.info("Expense controller requested " + request.getRequestURI() + " - Update by: "
+        + request.getRemoteAddr());
     return expenseService.update(id, model);
   }
 
   @DeleteMapping(value = "/delete/{id}")
   public ResponseEntity<ResponseModel> deleteById(@PathVariable Integer id,
       HttpServletRequest request) {
-    LOGGER.info("Expense controller requested - Update by: " + request.getRemoteAddr());
+    LOGGER.info("Expense controller requested " + request.getRequestURI() + " - Update by: "
+        + request.getRemoteAddr());
     return expenseService.delete(id);
   }
 
