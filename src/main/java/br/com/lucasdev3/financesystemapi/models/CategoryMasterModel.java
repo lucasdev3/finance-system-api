@@ -1,8 +1,8 @@
 package br.com.lucasdev3.financesystemapi.models;
 
+import java.util.Set;
 import br.com.lucasdev3.financesystemapi.entities.Expense;
 import br.com.lucasdev3.financesystemapi.entities.Income;
-import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

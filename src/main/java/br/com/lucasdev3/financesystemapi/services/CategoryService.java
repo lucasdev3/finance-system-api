@@ -1,15 +1,16 @@
 package br.com.lucasdev3.financesystemapi.services;
 
-import br.com.lucasdev3.financesystemapi.entities.Category;
-import br.com.lucasdev3.financesystemapi.models.CategoryModel;
-import br.com.lucasdev3.financesystemapi.models.ResponseModel;
-import br.com.lucasdev3.financesystemapi.repositories.CategoryRepository;
+import java.util.Arrays;
 import java.util.List;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import br.com.lucasdev3.financesystemapi.entities.Category;
+import br.com.lucasdev3.financesystemapi.models.CategoryModel;
+import br.com.lucasdev3.financesystemapi.models.ResponseModel;
+import br.com.lucasdev3.financesystemapi.repositories.CategoryRepository;
 
 @Service
 public class CategoryService {
@@ -32,47 +33,58 @@ public class CategoryService {
   @Transactional
   public ResponseEntity<ResponseModel> save(CategoryModel model) {
     try {
-      if (!model.getName().isEmpty() && !categoryRepository.existsByName(model.getName())) {
+      if (!model.getName().isEmpty() && !categoryRepository.existsByName(model.getName())
+          && !model.getType().isEmpty() && isValidTypeCategory(model.getType())) {
         categoryRepository.save(new Category(model));
         return ResponseEntity.ok(new ResponseModel("Categoria cadastrada com sucesso!", model));
       }
       return ResponseEntity.badRequest()
-          .body(new ResponseModel("Nome da categoria inválida ou categoria já existe."));
+          .body(new ResponseModel("Nome ou tipo da categoria inválido(a) ou categoria já existe."));
     } catch (Exception e) {
       LOGGER.error("Message: " + e.getMessage());
       return ResponseEntity.badRequest().body(new ResponseModel("Falha ao cadastrar categoria!"));
     }
   }
 
-//    public ResponseEntity<ResponseModel> update(Integer id, ExpenseAndIncomeRegistryModel model) {
-//        try {
-//            Income income = incomeRepository.findById(id).orElse(null);
-//            if (income != null) {
-//                income.setTitle(model.getTitle());
-//                income.setDescription(model.getDescription());
-//                income.setIncomeValue(model.getValue());
-//                incomeRepository.save(income);
-//                return ResponseEntity.ok(new ResponseModel("Receita atualizada com sucesso!", model));
-//            }
-//            return ResponseEntity.badRequest().body(new ResponseModel("Falha ao atualizar receita"));
-//        } catch (Exception e) {
-//            LOGGER.error("Message: " + e.getMessage());
-//            return ResponseEntity.internalServerError().body(new ResponseModel("Falha ao atualizar receita!"));
-//        }
-//    }
-//
-//    public ResponseEntity<ResponseModel> delete(Integer id) {
-//        try {
-//            Income income = incomeRepository.findById(id).orElse(null);
-//            if(income == null) {
-//                return ResponseEntity.notFound().build();
-//            }
-//            incomeRepository.deleteById(id);
-//            return ResponseEntity.ok(new ResponseModel("Receita deletada com sucesso!"));
-//        } catch (Exception e) {
-//            LOGGER.error("Message: " + e.getMessage());
-//            return ResponseEntity.internalServerError().body(new ResponseModel("Falha ao deletar despesa!"));
-//        }
-//    }
+  public boolean isValidTypeCategory(String type) {
+    if (type.isEmpty()) {
+      return false;
+    }
+    List<String> allowedCategories = Arrays.asList("INCOME", "EXPENSE");
+    return allowedCategories.contains(type.toUpperCase());
+  }
+
+  // public ResponseEntity<ResponseModel> update(Integer id, ExpenseAndIncomeRegistryModel model) {
+  // try {
+  // Income income = incomeRepository.findById(id).orElse(null);
+  // if (income != null) {
+  // income.setTitle(model.getTitle());
+  // income.setDescription(model.getDescription());
+  // income.setIncomeValue(model.getValue());
+  // incomeRepository.save(income);
+  // return ResponseEntity.ok(new ResponseModel("Receita atualizada com sucesso!", model));
+  // }
+  // return ResponseEntity.badRequest().body(new ResponseModel("Falha ao atualizar receita"));
+  // } catch (Exception e) {
+  // LOGGER.error("Message: " + e.getMessage());
+  // return ResponseEntity.internalServerError().body(new ResponseModel("Falha ao atualizar
+  // receita!"));
+  // }
+  // }
+  //
+  // public ResponseEntity<ResponseModel> delete(Integer id) {
+  // try {
+  // Income income = incomeRepository.findById(id).orElse(null);
+  // if(income == null) {
+  // return ResponseEntity.notFound().build();
+  // }
+  // incomeRepository.deleteById(id);
+  // return ResponseEntity.ok(new ResponseModel("Receita deletada com sucesso!"));
+  // } catch (Exception e) {
+  // LOGGER.error("Message: " + e.getMessage());
+  // return ResponseEntity.internalServerError().body(new ResponseModel("Falha ao deletar
+  // despesa!"));
+  // }
+  // }
 
 }

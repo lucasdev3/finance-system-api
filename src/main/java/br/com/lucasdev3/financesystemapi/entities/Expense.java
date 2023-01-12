@@ -1,6 +1,5 @@
 package br.com.lucasdev3.financesystemapi.entities;
 
-import br.com.lucasdev3.financesystemapi.models.ExpenseAndIncomeRegistryModel;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,6 +10,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
+import br.com.lucasdev3.financesystemapi.models.ExpenseAndIncomeRegistryModel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

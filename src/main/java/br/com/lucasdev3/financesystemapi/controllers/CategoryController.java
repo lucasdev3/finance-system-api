@@ -1,9 +1,5 @@
 package br.com.lucasdev3.financesystemapi.controllers;
 
-import br.com.lucasdev3.financesystemapi.entities.Category;
-import br.com.lucasdev3.financesystemapi.models.CategoryModel;
-import br.com.lucasdev3.financesystemapi.models.ResponseModel;
-import br.com.lucasdev3.financesystemapi.services.CategoryService;
 import java.util.HashMap;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
@@ -21,6 +17,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import br.com.lucasdev3.financesystemapi.entities.Category;
+import br.com.lucasdev3.financesystemapi.models.CategoryModel;
+import br.com.lucasdev3.financesystemapi.models.ResponseModel;
+import br.com.lucasdev3.financesystemapi.services.CategoryService;
 
 @RestController
 @RequestMapping(value = "/painel/category")
@@ -45,6 +45,8 @@ public class CategoryController {
       LOGGER.error(e.getMessage());
       return ResponseEntity.internalServerError().build();
     }
+
+
   }
 
   @GetMapping(value = "/{id}")
@@ -71,17 +73,19 @@ public class CategoryController {
     return categoryService.save(model);
   }
 
-//    @PutMapping(value = "/update/{id}")
-//    public ResponseEntity<ResponseModel> updateById(@PathVariable Integer id, @RequestBody ExpenseAndIncomeRegistryModel model, HttpServletRequest request) {
-//        LOGGER.info("Income controller requested - Update by: " + request.getRemoteAddr());
-//        return incomeService.update(id, model);
-//    }
-//
-//    @DeleteMapping(value = "/delete/{id}")
-//    public ResponseEntity<ResponseModel> deleteById(@PathVariable Integer id, HttpServletRequest request) {
-//        LOGGER.info("Income controller requested - Update by: " + request.getRemoteAddr());
-//        return incomeService.delete(id);
-//    }
+  // @PutMapping(value = "/update/{id}")
+  // public ResponseEntity<ResponseModel> updateById(@PathVariable Integer id, @RequestBody
+  // ExpenseAndIncomeRegistryModel model, HttpServletRequest request) {
+  // LOGGER.info("Income controller requested - Update by: " + request.getRemoteAddr());
+  // return incomeService.update(id, model);
+  // }
+  //
+  // @DeleteMapping(value = "/delete/{id}")
+  // public ResponseEntity<ResponseModel> deleteById(@PathVariable Integer id, HttpServletRequest
+  // request) {
+  // LOGGER.info("Income controller requested - Update by: " + request.getRemoteAddr());
+  // return incomeService.delete(id);
+  // }
 
   @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
   @ExceptionHandler(MethodArgumentNotValidException.class)

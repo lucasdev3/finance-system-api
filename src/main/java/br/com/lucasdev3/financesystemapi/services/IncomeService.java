@@ -1,16 +1,16 @@
 package br.com.lucasdev3.financesystemapi.services;
 
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import br.com.lucasdev3.financesystemapi.entities.Category;
 import br.com.lucasdev3.financesystemapi.entities.Income;
 import br.com.lucasdev3.financesystemapi.models.ExpenseAndIncomeRegistryModel;
 import br.com.lucasdev3.financesystemapi.models.ResponseModel;
 import br.com.lucasdev3.financesystemapi.repositories.CategoryRepository;
 import br.com.lucasdev3.financesystemapi.repositories.IncomeRepository;
-import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class IncomeService {
@@ -52,7 +52,7 @@ public class IncomeService {
   public ResponseEntity<ResponseModel> update(Integer id, ExpenseAndIncomeRegistryModel model) {
     try {
       Income income = incomeRepository.findById(id).orElse(null);
-      //Checando se a categoria existe
+      // Checando se a categoria existe
       Category category = categoryRepository.findById(model.getCategoryId()).orElse(null);
       if (income != null && category != null) {
         income.setTitle(model.getTitle());

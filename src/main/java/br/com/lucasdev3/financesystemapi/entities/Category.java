@@ -1,7 +1,5 @@
 package br.com.lucasdev3.financesystemapi.entities;
 
-import br.com.lucasdev3.financesystemapi.models.CategoryModel;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.Set;
 import javax.persistence.Column;
@@ -12,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import br.com.lucasdev3.financesystemapi.models.CategoryModel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -49,5 +49,6 @@ public class Category implements Serializable {
 
   public Category(CategoryModel model) {
     this.name = model.getName();
+    this.type = model.getType();
   }
 }

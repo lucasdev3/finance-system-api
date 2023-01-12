@@ -13,4 +13,6 @@ public class CategoryModel {
 
   private String name;
 
+  private String type;
+
 }
